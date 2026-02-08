@@ -11,6 +11,10 @@ require('./config/db');
 
 app.use(express.json());
 
+//Auth route
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
 // Import task routes (CRUD in separate files)
 const createTask = require("./routes/createTask");
 const readTask = require("./routes/readTask");
