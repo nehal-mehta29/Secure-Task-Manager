@@ -1,0 +1,32 @@
+const mongoose = require("mongoose");
+
+const taskSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, "Title is required"],
+        minlength: [3, "Title must be atleast 3 characters"]
+    },
+
+    description: {
+        type: String
+    },
+
+    completed: {
+        type: Boolean,
+        default: false
+    },
+
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+
+    //Associating tasks with users for authorization
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
+})
+
+module.exports = mongoose.model("Task", taskSchema);

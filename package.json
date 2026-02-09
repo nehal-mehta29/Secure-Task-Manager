@@ -1,0 +1,31 @@
+{
+  "name": "secure-task-manager",
+  "version": "1.0.0",
+  "description": "Week 4 : Assignment - To enhance the existing Task Manager API by securing endpoints with authentication and authorization using JSON Web Tokens (JWT). Implement user registration, login, and ensure tasks can only be accessed by their respective owners.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nehal-mehta29/Secure-Task-Manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nehal-mehta29/Secure-Task-Manager/issues"
+  },
+  "homepage": "https://github.com/nehal-mehta29/Secure-Task-Manager#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
