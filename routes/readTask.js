@@ -3,9 +3,10 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const authMiddleware = require("../middleware/authMiddleware");
 
 //To GET all tasks with filtering, pagination and sorting 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
     try {
         const {completed, title, _page, _limit, sortBy, order} = req.query;
         let query = {};
@@ -52,7 +53,7 @@ router.get("/", async (req, res) => {
 });
 
 //To GET a single task by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", authMiddleware, async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
         if (!task) return res.status(404).json({ message: "Task not found" });

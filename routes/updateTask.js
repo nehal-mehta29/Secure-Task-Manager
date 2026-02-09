@@ -3,9 +3,10 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // UPDATE a task by ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,

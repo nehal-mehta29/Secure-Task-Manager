@@ -3,9 +3,10 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // DELETE a task by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(req.params.id);
         if (!deletedTask) return res.status(404).json({ message: "Task not found" });
