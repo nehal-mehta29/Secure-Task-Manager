@@ -1,21 +1,21 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-    const { username, email, password } = req.body;
-
-    // Basic validation
-    if (!username || !email || !password) {
-        return res.status(400).json({
-            message: "Please provide all required fields"
-        })
-    }
-
     try{
+        const { username, email, password } = req.body;
+
+        // Basic validation
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                message: "Please provide all required fields"
+            })
+        }
+
+        
         //To check if the user already exists or not
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -23,10 +23,6 @@ router.post("/register", async (req, res) => {
                 message: "User already exists"
             })
         }
-
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
 
         // To create user
         const user = new User({
@@ -40,6 +36,7 @@ router.post("/register", async (req, res) => {
         res.status(201).json({
             message: "User registered successfully"
         })
+        
     }
 
     catch (error) {
@@ -50,15 +47,15 @@ router.post("/register", async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    try{
+        const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({
-            message: "Please provide email and password"
-        })
-    }
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Please provide email and password"
+            })
+        }
 
-    try {
         // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
@@ -75,20 +72,16 @@ router.post("/login", async (req, res) => {
             })
         }
 
-        // JWT payload
-        const payload = {
-            user: {
-                id: user.id
-            }
-        }
-
         // Generate token
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: "1h"
-        })
+        const token = jwt.sign(
+            {user: {_id: user._id}},
+            process.env.JWT_SECRET,
+            {expiresIn: "1h"}
+        )
 
         res.json({
-            token
+            token,
+            message: "Login successful"
         })
     } 
     
