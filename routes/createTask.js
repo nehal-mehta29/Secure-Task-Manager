@@ -13,7 +13,12 @@ router.post("/", authMiddleware, async (req, res) => {
             return res.status(400).json({ message: "Title must be at least 3 characters" });
         }
 
-        const task = new Task({ title, description });
+        const task = new Task({ 
+            title,
+            description, 
+            user: req.user._id 
+        });
+
         const savedTask = await task.save();
 
         res.status(201).json(savedTask);

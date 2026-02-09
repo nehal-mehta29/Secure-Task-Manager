@@ -9,7 +9,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 router.get("/", authMiddleware, async (req, res) => {
     try {
         const {completed, title, _page, _limit, sortBy, order} = req.query;
-        let query = {};
+        let query = { user: req.user._id };
 
         //Filtering by completion status
         if (completed !== undefined){
@@ -55,7 +55,11 @@ router.get("/", authMiddleware, async (req, res) => {
 //To GET a single task by ID
 router.get("/:id", authMiddleware, async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        });
+
         if (!task) return res.status(404).json({ message: "Task not found" });
         res.json(task);
     } 
